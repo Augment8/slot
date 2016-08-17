@@ -16,7 +16,7 @@ import com.google.inject.assistedinject.Assisted
 import org.joda.time.DateTime
 import org.reactivestreams.{Publisher, Subscriber}
 import play.api._
-import play.api.libs.json.{JsObject, JsValue, Json, Writes}
+import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
 
@@ -24,7 +24,7 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
 object UserResponse {
-  case class Session(userId: Long)
+  case class SessionId(sessionId: Long)
 }
 
 object TopicActor {
@@ -102,11 +102,11 @@ class HomeController @Inject()() // userActorを管理するActor
    * a path of `/`.
    */
   def index = Action {
-    Ok(views.html.index("Your new application is r."))
+    Ok(views.html.index("hoge"))
   }
 
   def view = Action {
-    Ok(views.html.index("Your new application is r."))
+    Ok("hello")
   }
   /**
     * Creates a websocket.  `acceptOrResult` is preferable here because it returns a
@@ -215,10 +215,11 @@ class HomeController @Inject()() // userActorを管理するActor
     //Future(Flow.fromSinkAndSource(sink, source))
     // Future(Flow.fromSinkAndSource(Sink.actorRef(topicActor, akka.actor.Status.Success(())), Source.fromPublisher(outPublisher)))
 
-    val userId = request.cookies.get("USER_ID").fold(new DateTime().getMillis)(n => n.value.toLong)
+    val userId = request.cookies.get("SESSION_ID").fold(new DateTime().getMillis)(n => n.value.toLong)
     Future(ActorFlow.actorRef[JsValue, JsValue] { out =>
-      implicit val n = Json.writes[UserResponse.Session]
-      out ! Json.toJson(UserResponse.Session(userId))
+      val typeTransform: JsObject => JsObject = { o => o + ("type", Json.toJson("session_id"))}
+      implicit val n = Json.writes[UserResponse.SessionId].transform(typeTransform)
+      out ! Json.toJson(UserResponse.SessionId(userId))
       UserActor.props(out, topicActor, userId)
     })
   }
