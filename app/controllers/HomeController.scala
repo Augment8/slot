@@ -2,20 +2,15 @@ package controllers
 
 import javax.inject._
 
-import actors.UserParentActor
-import akka.pattern.ask
+import actors.{TopicActor, UserActor}
 import akka.NotUsed
-import akka.actor.Actor.Receive
 import akka.actor._
 import akka.event.Logging
-import akka.stream.actor.{ActorPublisher, ActorSubscriber, OneByOneRequestStrategy, RequestStrategy}
-import akka.stream.{DelayOverflowStrategy, Materializer, OverflowStrategy}
+import akka.stream.{Materializer, OverflowStrategy}
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.util.Timeout
-import com.google.inject.assistedinject.Assisted
 import org.joda.time.DateTime
-import org.reactivestreams.{Publisher, Subscriber}
-import play.api._
+import org.reactivestreams.Publisher
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
 import play.api.mvc._
@@ -27,42 +22,6 @@ object UserResponse {
   case class SessionId(sessionId: Long)
 }
 
-object TopicActor {
-  case class Subscribe(actorRef: ActorRef)
-}
-
-class TopicActor extends ActorSubscriber {
-  override protected def requestStrategy: RequestStrategy = OneByOneRequestStrategy
-
-  var subscribers: Set[ActorRef] = Set()
-
-  override def receive: Receive = {
-    case Terminated(actor) =>
-      subscribers = subscribers - actor
-    case TopicActor.Subscribe(sub) =>
-      context.watch(sub)
-      subscribers = subscribers + sub
-    case value: JsValue =>
-      subscribers.foreach(a => a ! value)
-  }
-}
-
-object UserActor {
-  def props(out: ActorRef, topic: ActorRef, userId: Long): Props = Props(new UserActor(out, topic, userId))
-  trait Factory {
-    // Corresponds to the @Assisted parameters defined in the constructor
-    def apply(out: ActorRef, topic: ActorRef): Actor
-  }
-}
-class UserActor (val out: ActorRef, val topic: ActorRef, val userId: Long) extends Actor {
-  override def receive: Receive = {
-    case value: JsObject =>
-      topic ! value + ("userId", Json.toJson(userId))
-    case value: JsValue =>
-      topic ! value
-  }
-
-}
 /*
 object ViewActor {
   trait Factory {
@@ -212,15 +171,18 @@ class HomeController @Inject()() // userActorを管理するActor
     val sink = Sink.asPublisher(false)
     val (inActor, outPublisher) = source.toMat(sink)(Keep.both).run
 
-    //Future(Flow.fromSinkAndSource(sink, source))
-    // Future(Flow.fromSinkAndSource(Sink.actorRef(topicActor, akka.actor.Status.Success(())), Source.fromPublisher(outPublisher)))
-
-    val userId = request.cookies.get("SESSION_ID").fold(new DateTime().getMillis)(n => n.value.toLong)
+    val cookies = request.cookies
+    val name = cookies.get("NAME").fold("新規ユーザ")(n => n.value)
     Future(ActorFlow.actorRef[JsValue, JsValue] { out =>
       val typeTransform: JsObject => JsObject = { o => o + ("type", Json.toJson("session_id"))}
       implicit val n = Json.writes[UserResponse.SessionId].transform(typeTransform)
-      out ! Json.toJson(UserResponse.SessionId(userId))
-      UserActor.props(out, topicActor, userId)
+      val userId = cookies.get("SESSION_ID").fold {
+        val userId = new DateTime().getMillis
+        // クライアントにセッションIDを返す
+        out ! Json.toJson(UserResponse.SessionId(userId))
+        userId
+      }(n => n.value.toLong)
+      UserActor.props(out, topicActor, userId, name)
     })
   }
 

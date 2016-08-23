@@ -1,6 +1,5 @@
 package actors
 
-import actors.UserParentActor.Create
 import actors.ViewerActor.Subscribe
 import akka.actor.{Actor, ActorRef}
 import akka.actor.Actor.Receive
@@ -27,8 +26,3 @@ object ViewParentActor {
    object Create
 }
 
-class ViewParentActor @Inject() extends Actor {
-  override def receive: Receive = {
-    case _: Create =>
-  }
-}
