@@ -5,6 +5,13 @@ var connection = new WebSocket(url,[]);
 
 connection.onopen = function () {
   console.log('open');
+  document.addEventListener('click', function(e){
+    var obj = {
+      type: 'test',
+      value: {'message': 'test'}
+    };
+    connection.send(JSON.stringify(obj));
+  });
   document.addEventListener('touchstart', function(e){
     var touch = e.changedTouches[0];
     var obj = {

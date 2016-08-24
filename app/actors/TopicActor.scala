@@ -2,13 +2,14 @@ package actors
 
 import akka.actor.{ActorRef, Terminated}
 import akka.stream.actor.{ActorSubscriber, OneByOneRequestStrategy, RequestStrategy}
-import play.api.libs.json.JsValue
+import models.response.View
+import play.api.libs.json.{JsValue, Json}
 
 object TopicActor {
   case class Subscribe(actorRef: ActorRef)
 }
 
-class TopicActor extends ActorSubscriber {
+class TopicActor extends ActorSubscriber with View.JsonWriter {
   override protected def requestStrategy: RequestStrategy = OneByOneRequestStrategy
 
   var subscribers: Set[ActorRef] = Set()
@@ -19,8 +20,9 @@ class TopicActor extends ActorSubscriber {
     case TopicActor.Subscribe(sub) =>
       context.watch(sub)
       subscribers = subscribers + sub
-    case value: JsValue =>
-      subscribers.foreach(a => a ! value)
+    case value: View.Message =>
+      val json = Json.obj(("type", "Message"), ("value", Json.toJson(value)))
+      subscribers.foreach(a => a ! json)
   }
 }
 

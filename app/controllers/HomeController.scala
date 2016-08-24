@@ -9,6 +9,7 @@ import akka.event.Logging
 import akka.stream.{Materializer, OverflowStrategy}
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.util.Timeout
+import models.response.{SessionId, User}
 import org.joda.time.DateTime
 import org.reactivestreams.Publisher
 import play.api.libs.json._
@@ -18,9 +19,6 @@ import play.api.mvc._
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 
-object UserResponse {
-  case class SessionId(sessionId: Long)
-}
 
 /*
 object ViewActor {
@@ -175,11 +173,11 @@ class HomeController @Inject()() // userActorを管理するActor
     val name = cookies.get("NAME").fold("新規ユーザ")(n => n.value)
     Future(ActorFlow.actorRef[JsValue, JsValue] { out =>
       val typeTransform: JsObject => JsObject = { o => o + ("type", Json.toJson("session_id"))}
-      implicit val n = Json.writes[UserResponse.SessionId].transform(typeTransform)
+      implicit val n = Json.writes[SessionId].transform(typeTransform)
       val userId = cookies.get("SESSION_ID").fold {
         val userId = new DateTime().getMillis
         // クライアントにセッションIDを返す
-        out ! Json.toJson(UserResponse.SessionId(userId))
+        out ! Json.toJson(SessionId(userId))
         userId
       }(n => n.value.toLong)
       UserActor.props(out, topicActor, userId, name)
