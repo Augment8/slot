@@ -26,6 +26,8 @@ class TopicActor extends ActorSubscriber with View.JsonWriter {
           Json.obj(("type", "Event"), ("value", Json.toJson(value)))
         case value: View.Message =>
           Json.obj(("type", "Message"), ("value", Json.toJson(value)))
+        case value: View.Gravity =>
+          Json.obj(("type", "Gravity"), ("value", Json.toJson(value)))
       }
       subscribers.foreach(a => a ! json)
   }

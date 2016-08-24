@@ -22,6 +22,6 @@ trait JsonFormat {
   implicit val gravityJsonRead: Reads[Gravity] = Json.reads[Gravity]
   implicit val testJsonWrite: OWrites[Test] = Json.writes[Test]
   implicit val testJsonRead: Reads[Test] = Json.reads[Test]
-  implicit val changeNameJsonRead = Json.reads[ChangeName]
-  implicit val pushButtonJsonRead = Json.reads[PressButton]
+  implicit val changeNameJsonRead: Reads[ChangeName] = Json.reads[ChangeName]
+  implicit val pressButtonJsonRead: Reads[PressButton] = Json.reads[PressButton]
 }

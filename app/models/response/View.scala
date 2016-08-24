@@ -17,5 +17,6 @@ object View {
   trait JsonWriter {
     implicit val testWriter: OWrites[Message] = Json.writes[Message]
     implicit val eventWriter: OWrites[Event] = Json.writes[Event]
+    implicit val gravityWriter = Json.writes[Gravity]
   }
 }

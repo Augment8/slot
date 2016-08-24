@@ -16,7 +16,6 @@ class UserActor (val out: ActorRef, val topic: ActorRef, val userId: Long, _name
   var name = _name
   override def receive: Receive = {
     case user: User =>
-      println(user)
       user match {
         case value: Test =>
           topic ! View.Message(value.message, userId, name)
@@ -24,6 +23,8 @@ class UserActor (val out: ActorRef, val topic: ActorRef, val userId: Long, _name
           topic ! View.Event(value.value, userId, name)
         case value: ChangeName =>
           name = value.name
+        case value: Gravity =>
+          topic ! View.Gravity(value.x, value.y, value.z, userId, name)
       }
     case value: JsValue =>
       // クライアントからの入力をリクエストを表す型に変換
@@ -33,6 +34,7 @@ class UserActor (val out: ActorRef, val topic: ActorRef, val userId: Long, _name
           case "test" => envelope.value.validate[Test]
           case "ChangeName" => envelope.value.validate[ChangeName]
           case "PressButton" => envelope.value.validate[PressButton]
+          case "Gravity" => envelope.value.validate[Gravity]
         }
       } yield self ! request
   }

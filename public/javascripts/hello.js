@@ -39,6 +39,7 @@ connection.onopen = function () {
     };
     // connection.send(JSON.stringify(obj));
   });
+  /*
   document.addEventListener('touchstart', function(e){
     var touch = e.changedTouches[0];
     var obj = {
@@ -66,12 +67,15 @@ connection.onopen = function () {
     };
     connection.send(JSON.stringify(obj));
   });
+  */
   window.addEventListener("devicemotion", mutator(200)(function(e){
     var obj = {
-      type: 'gravity',
-      x: e.accelerationIncludingGravity.x,
-      y: e.accelerationIncludingGravity.y,
-      z: e.accelerationIncludingGravity.z
+      type: 'Gravity',
+      value: {
+        x: e.accelerationIncludingGravity.x,
+        y: e.accelerationIncludingGravity.y,
+        z: e.accelerationIncludingGravity.z
+      }
     };
     connection.send(JSON.stringify(obj));
   }), true);
