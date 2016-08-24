@@ -8,6 +8,8 @@ sealed trait User {
 
 case class Envelope(`type`: String,value: JsValue)
 
+case class ChangeName(name: String) extends User
+case class PressButton(value: String) extends User
 case class SessionId(sessionId: Long) extends User
 case class Gravity(x: Double, y: Double, z: Double) extends User
 case class Test(message: String) extends User
@@ -20,4 +22,6 @@ trait JsonFormat {
   implicit val gravityJsonRead: Reads[Gravity] = Json.reads[Gravity]
   implicit val testJsonWrite: OWrites[Test] = Json.writes[Test]
   implicit val testJsonRead: Reads[Test] = Json.reads[Test]
+  implicit val changeNameJsonRead = Json.reads[ChangeName]
+  implicit val pushButtonJsonRead = Json.reads[PressButton]
 }

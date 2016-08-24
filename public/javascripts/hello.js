@@ -5,12 +5,39 @@ var connection = new WebSocket(url,[]);
 
 connection.onopen = function () {
   console.log('open');
+  var name_text = document.getElementById('name_text');
+  name_text.disabled = false;
+  name_text.addEventListener('keydown', function(e){
+    var obj = {
+      type: 'ChangeName',
+      value: {'name': e.srcElement.value}
+    };
+    connection.send(JSON.stringify(obj));
+  });
+  var a_button = document.getElementById('a_button');
+  a_button.addEventListener('touchstart', function(){
+    var obj = {
+      type: 'PressButton',
+      value: {'value': 'a'}
+    };
+    connection.send(JSON.stringify(obj));
+  });
+
+  var b_button = document.getElementById('b_button');
+  b_button.addEventListener('touchstart', function(){
+    var obj = {
+      type: 'PressButton',
+      value: {'value': 'b'}
+    };
+    connection.send(JSON.stringify(obj));
+  });
+
   document.addEventListener('click', function(e){
     var obj = {
       type: 'test',
       value: {'message': 'test'}
     };
-    connection.send(JSON.stringify(obj));
+    // connection.send(JSON.stringify(obj));
   });
   document.addEventListener('touchstart', function(e){
     var touch = e.changedTouches[0];

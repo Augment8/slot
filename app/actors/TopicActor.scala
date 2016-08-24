@@ -20,8 +20,13 @@ class TopicActor extends ActorSubscriber with View.JsonWriter {
     case TopicActor.Subscribe(sub) =>
       context.watch(sub)
       subscribers = subscribers + sub
-    case value: View.Message =>
-      val json = Json.obj(("type", "Message"), ("value", Json.toJson(value)))
+    case view: View =>
+      val json = view match {
+        case value: View.Event =>
+          Json.obj(("type", "Event"), ("value", Json.toJson(value)))
+        case value: View.Message =>
+          Json.obj(("type", "Message"), ("value", Json.toJson(value)))
+      }
       subscribers.foreach(a => a ! json)
   }
 }

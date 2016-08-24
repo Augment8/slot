@@ -1,0 +1,48 @@
+html {
+    height: 100%;
+}
+body {
+    margin:  0;
+    padding: 0;
+    height: 100%;
+}
+.header {
+    height: 44px;
+    width: 100%;
+}
+
+.textWrapper{
+    padding: 4px;
+    text-align: center;
+}
+
+#name_text {
+    border: none;
+    padding: 6px 8px;
+    font-size: 20px;
+    width: 290px;
+    height: 24px;
+}
+
+.button-list {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    width: 48%;
+    height: 90%;
+    margin: 5% 0;
+}
+
+.a_button {
+    background-color: #ffaaaa;
+}
+
+.b_button {
+    background-color: #aaaaff;
+}
