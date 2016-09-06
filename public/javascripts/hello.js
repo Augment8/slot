@@ -147,8 +147,7 @@
   var func = {
     session_id: function(message) {
       document.cookie = "SESSION_ID=" + message.sessionId + ";";
-      session.user = prompt("ユーザー名を入力してください", '');
-      connection.send(JSON.stringify({type: "session", session: session}));
+      connection.send(JSON.stringify({type: "session_id", session: session}));
     },
     session: function(message) {
       var session = message.session;
@@ -158,7 +157,7 @@
   };
 
 // Log messages from the server
-  connection.addEventListener('message', function(){
+  connection.addEventListener('message', function(e){
     console.log('Server: ' + e.data);
     var message = JSON.parse(e.data);
     func[message.type](message);
