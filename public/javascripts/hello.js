@@ -80,7 +80,7 @@
 
   // 傾きセンサー
   connection.addEventListener('open', function() {
-    window.addEventListener("devicemotion", mutator(200)(function(e){
+    window.addEventListener("devicemotion", mutator(1000/30)(function(e){
       var obj = {
         type: 'Gravity',
         value: {
