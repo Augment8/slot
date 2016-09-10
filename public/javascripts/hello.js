@@ -12,6 +12,61 @@
   open();
   setInterval(open, 5000);
 
+  document.addEventListener("DOMContentLoaded", function(e) {
+    connection.addEventListener('open', function(){
+      // 名前の反映
+      var name_text = document.getElementById('name_text');
+      var cookie = getCookies();
+      name_text.value = cookie.name || '';
+      name_text.disabled = false;
+      var emitChangeName = function (e) {
+        var obj = {
+          type: 'ChangeName',
+          value: {'name': e.srcElement.value}
+        };
+        cookie.name = name_text.value;
+        setCookie('name', name_text.value);
+        console.log(obj);
+        connection.send(JSON.stringify(obj));
+      };
+      name_text.addEventListener('keyup', emitChangeName);
+    });
+
+    connection.addEventListener('open', function(){
+      var a_button = document.getElementById('a_button');
+      a_button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'a'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+    });
+
+    connection.addEventListener('open', function() {
+      var b_button = document.getElementById('b_button');
+      b_button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'b'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+    });
+
+    connection.addEventListener('open', function() {
+      var b_button = document.getElementById('c_button');
+      b_button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'c'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+    });
+
+  });
+
   connection.addEventListener('open', function(e){
     console.log('WebSocket open');
     console.log(e);
@@ -31,41 +86,6 @@
     setTimeout(function(){
       open();
     },1000);
-  });
-
-  connection.addEventListener('open', function(){
-    // 名前の反映
-    var name_text = document.getElementById('name_text');
-    name_text.disabled = false;
-    name_text.addEventListener('keydown', function(e){
-      var obj = {
-        type: 'ChangeName',
-        value: {'name': e.srcElement.value}
-      };
-      connection.send(JSON.stringify(obj));
-    });
-  });
-
-  connection.addEventListener('open', function(){
-    var a_button = document.getElementById('a_button');
-      a_button.addEventListener('touchstart', function(){
-        var obj = {
-          type: 'PressButton',
-          value: {'value': 'a'}
-        };
-        connection.send(JSON.stringify(obj));
-      });
-    });
-
-  connection.addEventListener('open', function() {
-    var b_button = document.getElementById('b_button');
-    b_button.addEventListener('touchstart', function(){
-      var obj = {
-        type: 'PressButton',
-        value: {'value': 'b'}
-      };
-      connection.send(JSON.stringify(obj));
-    });
   });
 
   connection.addEventListener('open', function() {
@@ -143,16 +163,28 @@
     };
   };
 
+  var setCookie = function(key, value) {
+    document.cookie = [key, value].join('=');
+  };
+
+  function getCookies()
+  {
+    var cookie = document.cookie;
+    if( cookie == '' ) {
+      return {};
+    }
+    var values = cookie.split( '; ' );
+    return values.reduce(function(acc, x){
+      var value = x.split( '=' );
+      acc[value[0]] = decodeURIComponent(value[1]);
+      return acc;
+    }, {});
+  }
+
   var session = {};
   var func = {
     session_id: function(message) {
-      document.cookie = "SESSION_ID=" + message.sessionId + ";";
-      connection.send(JSON.stringify({type: "session_id", session: session}));
-    },
-    session: function(message) {
-      var session = message.session;
-      session.user = prompt("ユーザー名を入力してください。", '');
-      connection.send(JSON.stringify({type: "session", session: session}));
+      setCookie('SESSION_ID', message.sessionId);
     }
   };
 

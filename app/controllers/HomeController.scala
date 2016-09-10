@@ -170,7 +170,7 @@ class HomeController @Inject()() // userActorを管理するActor
     val (inActor, outPublisher) = source.toMat(sink)(Keep.both).run
 
     val cookies = request.cookies
-    val name = cookies.get("NAME").fold("新規ユーザ")(n => n.value)
+    val name = cookies.get("name").fold("新規ユーザ")(n => n.value)
     Future(ActorFlow.actorRef[JsValue, JsValue] { out =>
       val typeTransform: JsObject => JsObject = { o => o + ("type", Json.toJson("session_id"))}
       implicit val n = Json.writes[SessionId].transform(typeTransform)
