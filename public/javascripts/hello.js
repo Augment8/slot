@@ -13,23 +13,28 @@
   setInterval(open, 5000);
 
   document.addEventListener("DOMContentLoaded", function(e) {
-    connection.addEventListener('open', function(){
-      // 名前の反映
-      var name_text = document.getElementById('name_text');
-      var cookie = getCookies();
-      name_text.value = cookie.name || '';
-      name_text.disabled = false;
-      var emitChangeName = function (e) {
-        var obj = {
-          type: 'ChangeName',
-          value: {'name': e.srcElement.value}
-        };
-        cookie.name = name_text.value;
-        setCookie('name', name_text.value);
-        console.log(obj);
-        connection.send(JSON.stringify(obj));
+    var emitChangeName = function (name) {
+      var obj = {
+        type: 'ChangeName',
+        value: {'name': name}
       };
-      name_text.addEventListener('keyup', emitChangeName);
+      connection.send(JSON.stringify(obj));
+    };
+
+    // 名前の反映
+    var name_text = document.getElementById('name_text');
+    var cookie = getCookies();
+    name_text.value = cookie.name || '';
+
+    connection.addEventListener('open', function(){
+      name_text.disabled = false;
+
+      name_text.addEventListener('keyup', function(e){
+        var name = e.srcElement.value;
+        emitChangeName(name);
+        console.log(name);
+        setCookie('name', name);
+      });
     });
 
     connection.addEventListener('open', function(){
@@ -164,7 +169,7 @@
   };
 
   var setCookie = function(key, value) {
-    document.cookie = [key, value].join('=');
+    document.cookie = [key, encodeURIComponent(value)].join('=') + ";";
   };
 
   function getCookies()
