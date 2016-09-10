@@ -28,6 +28,7 @@
 
     connection.addEventListener('open', function(){
       name_text.disabled = false;
+      emitChangeName(name_text.value);
 
       name_text.addEventListener('keyup', function(e){
         var name = e.srcElement.value;
