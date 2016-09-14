@@ -1,6 +1,12 @@
 (function(global){
   'use strict';
 
+  var ua = window.navigator.userAgent
+  var isAndroid;
+  if (/Android/.test(ua)) {
+    isAndroid = true;
+  }
+
   var url = location.toString().replace("http","ws") + 'ws/';
   var connection = null;
   var open = function() {
@@ -110,9 +116,9 @@
       var obj = {
         type: 'Gravity',
         value: {
-          x: e.accelerationIncludingGravity.x,
+          x: e.accelerationIncludingGravity.x * isAndroid ? -1 :1,
           y: e.accelerationIncludingGravity.y,
-          z: e.accelerationIncludingGravity.z
+          z: e.accelerationIncludingGravity.z * isAndroid ? -1 : 1,
         }
       };
       connection.send(JSON.stringify(obj));
