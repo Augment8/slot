@@ -116,9 +116,9 @@
       var obj = {
         type: 'Gravity',
         value: {
-          x: e.accelerationIncludingGravity.x * isAndroid ? -1 :1,
+          x: e.accelerationIncludingGravity.x * (isAndroid ? -1 :1),
           y: e.accelerationIncludingGravity.y,
-          z: e.accelerationIncludingGravity.z * isAndroid ? -1 : 1,
+          z: e.accelerationIncludingGravity.z * (isAndroid ? -1 :1)
         }
       };
       connection.send(JSON.stringify(obj));
