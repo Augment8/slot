@@ -1,8 +1,8 @@
 (function(global){
   'use strict';
 
-  var ua = window.navigator.userAgent
-  var isAndroid;
+  var ua = window.navigator.userAgent;
+  var isAndroid = false;
   if (/Android/.test(ua)) {
     isAndroid = true;
   }
