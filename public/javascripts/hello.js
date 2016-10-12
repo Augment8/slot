@@ -45,8 +45,8 @@
     });
 
     connection.addEventListener('open', function(){
-      var a_button = document.getElementById('a_button');
-      a_button.addEventListener('touchstart', function(){
+      var button = document.getElementById('a_button');
+      button.addEventListener('touchstart', function(){
         var obj = {
           type: 'PressButton',
           value: {'value': 'a'}
@@ -56,8 +56,8 @@
     });
 
     connection.addEventListener('open', function() {
-      var b_button = document.getElementById('b_button');
-      b_button.addEventListener('touchstart', function(){
+      var button = document.getElementById('b_button');
+      button.addEventListener('touchstart', function(){
         var obj = {
           type: 'PressButton',
           value: {'value': 'b'}
@@ -67,11 +67,44 @@
     });
 
     connection.addEventListener('open', function() {
-      var b_button = document.getElementById('c_button');
-      b_button.addEventListener('touchstart', function(){
+      var button = document.getElementById('up_button');
+      button.addEventListener('touchstart', function(){
         var obj = {
           type: 'PressButton',
-          value: {'value': 'c'}
+          value: {'value': 'up'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+    });
+
+    connection.addEventListener('open', function() {
+      var button = document.getElementById('down_button');
+      button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'down'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+    });
+
+    connection.addEventListener('open', function() {
+      var button = document.getElementById('left_button');
+      button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'left'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+    });
+
+    connection.addEventListener('open', function() {
+      var button = document.getElementById('right_button');
+      button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'right'}
         };
         connection.send(JSON.stringify(obj));
       });

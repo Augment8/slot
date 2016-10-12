@@ -2,6 +2,7 @@ html {
     height: 100%;
 }
 body {
+    position: relative;
     margin:  0;
     padding: 0;
     height: 100%;
@@ -12,6 +13,7 @@ body {
 }
 
 .textWrapper{
+    margin: 10px 0 0 0;
     padding: 4px;
     text-align: center;
 }
@@ -24,38 +26,53 @@ body {
     height: 24px;
 }
 
-.button-list {
-    text-align: center;
-    vertical-align: middle;
-    height: 100%;
-}
-
 .button {
     display: inline-block;
     vertical-align: middle;
     text-align: center;
-    width: 120px;
-    height: 120px;
-    margin: 8px;
+    height: 18vmin;
+    width: 18vmin;
 }
 
-.a_button {
+.up_button {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    background-color: #ffaaaa;
+    background-color: #999;
+    top: 61vmin;
+    left: 15vmin;
+}
+
+.down_button {
+    position: absolute;
+    background-color: #999;
+    top: 99vmin;
+    left: 15vmin;
+}
+
+.left_button {
+    position: absolute;
+    background-color: #999;
+    top: 80vmin;
+    left: 1vmin;
+}
+
+.right_button {
+    position: absolute;
+    background-color: #999;
+    top: 80vmin;
+    left: 29vmin;
 }
 
 .b_button {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    top: 89vmin;
+    right: 26vmin;
     background-color: #aaaaff;
 }
 
-.c_button {
+.a_button {
     position: absolute;
-    bottom: 200px;
-    margin: -60px;
-    background-color: #ffaaff;
+    top: 72vmin;
+    right: 1vmin;
+    background-color: #ffaaaa;
 }
+
