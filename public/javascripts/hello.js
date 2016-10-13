@@ -18,6 +18,12 @@
   open();
   setInterval(open, 5000);
 
+  document.documentElement.addEventListener('touchstart', function (e) {
+    if (e.target.nodeName !== "INPUT") {
+      e.preventDefault();
+    }
+  }, true);
+
   document.addEventListener("DOMContentLoaded", function(e) {
     var emitChangeName = function (name) {
       var obj = {
@@ -52,7 +58,7 @@
           value: {'value': 'a'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
     });
 
     connection.addEventListener('open', function() {
@@ -63,7 +69,7 @@
           value: {'value': 'b'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
     });
 
     connection.addEventListener('open', function() {
@@ -74,32 +80,34 @@
           value: {'value': 'up'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
       button.addEventListener('touchend', function(){
         var obj = {
           type: 'ReleaseButton',
           value: {'value': 'up'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
     });
 
     connection.addEventListener('open', function() {
       var button = document.getElementById('down_button');
-      button.addEventListener('touchstart', function(){
+      button.addEventListener('touchstart', function(e){
         var obj = {
           type: 'PressButton',
           value: {'value': 'down'}
         };
         connection.send(JSON.stringify(obj));
-      });
+        e.preventDefault();
+      }, true);
       button.addEventListener('touchend', function(){
         var obj = {
           type: 'ReleaseButton',
           value: {'value': 'down'}
         };
         connection.send(JSON.stringify(obj));
-      });
+        e.preventDefault();
+      }, true);
     });
 
     connection.addEventListener('open', function() {
@@ -110,14 +118,14 @@
           value: {'value': 'left'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
       button.addEventListener('touchend', function(){
         var obj = {
           type: 'ReleaseButton',
           value: {'value': 'left'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
     });
 
     connection.addEventListener('open', function() {
@@ -128,14 +136,14 @@
           value: {'value': 'right'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
       button.addEventListener('touchend', function(){
         var obj = {
           type: 'ReleaseButton',
           value: {'value': 'right'}
         };
         connection.send(JSON.stringify(obj));
-      });
+      }, true);
     });
 
   });
