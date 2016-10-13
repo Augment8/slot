@@ -75,6 +75,13 @@
         };
         connection.send(JSON.stringify(obj));
       });
+      button.addEventListener('touchend', function(){
+        var obj = {
+          type: 'ReleaseButton',
+          value: {'value': 'up'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
     });
 
     connection.addEventListener('open', function() {
@@ -82,6 +89,13 @@
       button.addEventListener('touchstart', function(){
         var obj = {
           type: 'PressButton',
+          value: {'value': 'down'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+      button.addEventListener('touchend', function(){
+        var obj = {
+          type: 'ReleaseButton',
           value: {'value': 'down'}
         };
         connection.send(JSON.stringify(obj));
@@ -97,6 +111,13 @@
         };
         connection.send(JSON.stringify(obj));
       });
+      button.addEventListener('touchend', function(){
+        var obj = {
+          type: 'ReleaseButton',
+          value: {'value': 'left'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
     });
 
     connection.addEventListener('open', function() {
@@ -104,6 +125,13 @@
       button.addEventListener('touchstart', function(){
         var obj = {
           type: 'PressButton',
+          value: {'value': 'right'}
+        };
+        connection.send(JSON.stringify(obj));
+      });
+      button.addEventListener('touchend', function(){
+        var obj = {
+          type: 'ReleaseButton',
           value: {'value': 'right'}
         };
         connection.send(JSON.stringify(obj));
