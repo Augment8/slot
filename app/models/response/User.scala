@@ -10,6 +10,7 @@ case class Envelope(`type`: String,value: JsValue)
 
 case class ChangeName(name: String) extends User
 case class PressButton(value: String) extends User
+case class ReleaseButton(value: String) extends User
 case class SessionId(sessionId: Long) extends User
 case class Gravity(x: Double, y: Double, z: Double) extends User
 case class Test(message: String) extends User
@@ -24,4 +25,5 @@ trait JsonFormat {
   implicit val testJsonRead: Reads[Test] = Json.reads[Test]
   implicit val changeNameJsonRead: Reads[ChangeName] = Json.reads[ChangeName]
   implicit val pressButtonJsonRead: Reads[PressButton] = Json.reads[PressButton]
+  implicit val releaseButtonJsonRead: Reads[ReleaseButton] = Json.reads[ReleaseButton]
 }

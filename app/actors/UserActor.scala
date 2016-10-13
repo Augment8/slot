@@ -21,6 +21,8 @@ class UserActor (val out: ActorRef, val topic: ActorRef, val userId: Long, _name
           topic ! View.Message(value.message, userId, name)
         case value: PressButton =>
           topic ! View.Event(value.value, userId, name)
+        case value: ReleaseButton =>
+          topic ! View.Event(s"release_${value.value}", userId, name)
         case value: ChangeName =>
           name = value.name
         case value: Gravity =>
@@ -34,6 +36,7 @@ class UserActor (val out: ActorRef, val topic: ActorRef, val userId: Long, _name
           case "test" => envelope.value.validate[Test]
           case "ChangeName" => envelope.value.validate[ChangeName]
           case "PressButton" => envelope.value.validate[PressButton]
+          case "ReleaseButton" => envelope.value.validate[ReleaseButton]
           case "Gravity" => envelope.value.validate[Gravity]
         }
       } yield self ! request
