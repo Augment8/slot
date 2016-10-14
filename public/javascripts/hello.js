@@ -73,6 +73,17 @@
     });
 
     connection.addEventListener('open', function() {
+      var button = document.getElementById('c_button');
+      button.addEventListener('touchstart', function(){
+        var obj = {
+          type: 'PressButton',
+          value: {'value': 'c'}
+        };
+        connection.send(JSON.stringify(obj));
+      }, true);
+    });
+
+    connection.addEventListener('open', function() {
       var button = document.getElementById('up_button');
       button.addEventListener('touchstart', function(){
         var obj = {
