@@ -24,6 +24,24 @@ body {
     height: 24px;
 }
 
+.button-list-wrapper {
+    background: #eee;
+    position: relative;
+}
+
+.button-list {
+    height: 0;
+    width: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin: auto;
+    height: 80vmin;
+    width: 100vmin;
+}
+
 .button {
     display: inline-block;
     vertical-align: middle;
@@ -60,17 +78,25 @@ body {
     left: 29vmin;
 }
 
-.b_button {
-    position: absolute;
-    top: 89vmin;
-    right: 26vmin;
-    background-color: #aaaaff;
-}
-
 .a_button {
     position: absolute;
-    top: 72vmin;
+    top: 80vmin;
     right: 1vmin;
     background-color: #ffaaaa;
 }
 
+.b_button {
+    position: absolute;
+    top: 91vmin;
+    right: 26vmin;
+    background-color: #aaaaff;
+}
+
+.c_button {
+    position: absolute;
+    top: 64vmin;
+    right: 10vmin;
+    height: 11vmin;
+    width: 30vmin;
+    background-color: #ffffaa;
+}
