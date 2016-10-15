@@ -11,7 +11,7 @@ body {
 }
 
 .textWrapper{
-    margin: 80px 0 0 0;
+    margin: 20px 0 0 0;
     padding: 4px;
     text-align: center;
 }
@@ -30,15 +30,12 @@ body {
 }
 
 .button-list {
-    height: 0;
-    width: 0;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     position: absolute;
     margin: auto;
-    height: 80vmin;
     width: 100vmin;
 }
 
@@ -53,48 +50,48 @@ body {
 .up_button {
     position: absolute;
     background-color: #999;
-    top: 61vmin;
+    top: 41vmin;
     left: 15vmin;
 }
 
 .down_button {
     position: absolute;
     background-color: #999;
-    top: 99vmin;
+    top: 79vmin;
     left: 15vmin;
 }
 
 .left_button {
     position: absolute;
     background-color: #999;
-    top: 80vmin;
+    top: 60vmin;
     left: 1vmin;
 }
 
 .right_button {
     position: absolute;
     background-color: #999;
-    top: 80vmin;
+    top: 60vmin;
     left: 29vmin;
 }
 
 .a_button {
     position: absolute;
-    top: 80vmin;
+    top: 60vmin;
     right: 1vmin;
     background-color: #ffaaaa;
 }
 
 .b_button {
     position: absolute;
-    top: 91vmin;
+    top: 71vmin;
     right: 26vmin;
     background-color: #aaaaff;
 }
 
 .c_button {
     position: absolute;
-    top: 64vmin;
+    top: 44vmin;
     right: 10vmin;
     height: 11vmin;
     width: 30vmin;
